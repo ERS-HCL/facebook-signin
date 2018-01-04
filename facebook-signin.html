@@ -1,0 +1,286 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<dom-module id="facebook-signin">
+
+	<template>
+		<style>
+			#customBtn {
+				display: inline-block;
+				background: #3b5998;
+				color: #fff;
+				width: 192px;
+				height: 46px;
+				border-radius: 3px;
+				border: 1px solid #3266d5;
+				/* box-shadow: 1px 1px 1px #B3AEAE; */
+				white-space: nowrap;
+			}
+
+			#customBtn:hover {
+				cursor: pointer;
+			}
+
+			span.icon {
+				/* background-image: url('fb-small-icon.jpg'); */
+				display: inline-block;
+				vertical-align: middle;
+				width: 42px;
+				height: 42px;
+				margin-top: 2px;
+				margin-left: 2px;
+			}
+
+			span.buttonText {
+				display: inline-block;
+				vertical-align: middle;
+				padding-left: 3px;
+				/* padding-right: 100px; */
+				font-size: 14px;
+				font-weight: bold;
+				font-family: 'Roboto', arial, sans-serif;
+			}
+
+		</style>
+
+		<div id="facebookSignIn">
+			<div id="customBtn" on-tap="_loadScript">
+				<span class="icon">
+						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 216 216" class="_5h0m" color="#ffffff">
+							<path fill="#ffffff" d="
+							M204.1 0H11.9C5.3 0 0 5.3 0 11.9v192.2c0 6.6 5.3 11.9 11.9
+							11.9h103.5v-83.6H87.2V99.8h28.1v-24c0-27.9 17-43.1 41.9-43.1
+							11.9 0 22.2.9 25.2 1.3v29.2h-17.3c-13.5 0-16.2 6.4-16.2
+							15.9v20.8h32.3l-4.2 32.6h-28V216h55c6.6 0 11.9-5.3
+							11.9-11.9V11.9C216 5.3 210.7 0 204.1 0z"></path>
+						</svg>
+				</span>
+				<span class="buttonText">Login with Facebook</span>
+			</div>
+		</div>
+	</template>
+	<script>
+		'use strict';
+
+		Polymer({
+
+			is: 'facebook-signin',
+
+			/**
+			 * The `signin-success` event is fired if a user
+			 * signs in successfully.
+			 *
+			 * @event signin-success
+			 */
+
+			/**
+			 * The `signin-not-authorized` event is fired if a
+			 * user is signed into Facebook but not into your app.
+			 *
+			 * @event signin-not-authorized
+			 */
+
+			/**
+			 * The `signin-not-logged-in` event is fired if a
+			 * user is not signed into facebook.
+			 *
+			 * @event signin-not-logged-in
+			 */
+
+			properties: {
+
+
+				// PRIVATE PROPERTIES
+				_script_loaded: {
+					type: Boolean,
+					value: false
+				},
+				
+				_is_popup_open: {
+					type: Boolean,
+					notify: true,
+					value: false
+				},
+
+				// PUBLIC PROPERTIES
+				/**
+				 * The app ID of your Facebook app. Create one at https://developers.facebook.com/apps/
+				 */
+				appID: {
+					type: String,
+					value: "<Your App ID>"
+				},
+
+				/**
+				 * Whether you want to set a cookie in order to allow the server to access the session.
+				 */
+				cookie: {
+					type: Boolean,
+					value: true
+				},
+
+				/**
+				 * The `version` attribute specifies which FB API version should be used. Example 'v2.10'.
+				 */
+				version: {
+					type: String,
+					value: 'v2.10'
+				},
+
+				/**
+				 * The language of the sdk.
+				 */
+				language: {
+					type: String,
+					value: 'en_IN'
+				},
+
+				/**
+				 * The scope that you want access to.
+				 * (see https://developers.facebook.com/docs/facebook-login/permissions/v2.10). Should be space delimited.
+				 */
+				scope: {
+					type: String,
+					value: 'public_profile,email'
+				},
+
+				/**
+				 * Is user signed in?
+				 */
+				fbsignedIn: {
+					type: Boolean,
+					notify: true,
+					value: false,
+					observer: '_observeSignedIn'
+				},
+
+				fbLoginToken: {
+					type: String,
+					value: ""
+				}
+			},
+
+			openFacebookPopup: function () {
+				if (this._script_loaded) {
+					console.log(">>>>>>>>>>> OPENING FACEBOOK");
+					this._openPopup();
+				} else {
+					console.log(">>>> FACEBOOK NOT LOADED YET. Will open after it loads...");
+				}
+			},
+
+			_openPopup: function () {
+				if (!this._is_popup_open) {
+
+					console.log("Facebook Object", FB);
+
+					let options = {
+						appId: this.appID,
+						cookie: this.cookie,
+						xfbml: false,
+						version: this.version
+						// status: true // Enable this flag to fix popup blocker issue
+					}
+					FB.init(options);
+
+					FB.login(function (response) {
+						console.log("Get Login Response:: ", response);
+						this._statusChangedCallback(response);
+					}.bind(this), {
+						scope: this.scope,
+						auth_type: 'reauthenticate',
+						return_scopes: true,
+						enable_profile_selector: true
+					});
+
+					this._is_popup_open = true;
+				}
+			},
+
+			_statusChangedCallback: function (response) {
+				if (response.status == "connected") {
+					// Logged into app and Facebook.
+					console.log("connected");
+					this.fbsignedIn = true;
+					this.fire('signin-success', {
+						response: response
+					}, {
+						bubbles: false
+					});
+
+				} else if (response.status === 'not_authorized') {
+					// The person is logged into Facebook, but not into the app.
+					console.log("Not Authorized");
+					this.fbsignedIn = false;
+					this.fire('signin-not-authorized', {
+						response: response
+					}, {
+						bubbles: false
+					});
+				} else {
+					// The person is not logged into Facebook, so we're not sure if
+					// they are logged into this app or not.
+					console.log("User not signed in");
+					this.fbsignedIn = false;
+					this.fire('signin-not-logged-in', {
+						response: response
+					}, {
+						bubbles: false
+					});
+				}
+
+				this._is_popup_open = false;
+
+			},
+
+			signOut: function () {
+
+				/* NOTE:
+					1. A person logs into Facebook, then logs into your app. Upon logging out from your app, the person is still logged into Facebook.
+					2. A person logs into your app and into Facebook as part of your app's login flow. Upon logging out from your app, the user is also logged out of Facebook.
+					3. A person logs into another app and into Facebook as part of the other app's login flow, then logs into your app. Upon logging out from either app, the user is logged out of Facebook.
+				*/
+
+				FB.logout(function (response) {
+					this.fbsignedIn = false;
+					console.log("Print Logout Response:: ", response);
+				});
+			},
+
+			_observeSignedIn: function (newVal, oldVal) {
+				// this.fbsignedIn = false;
+				console.log("value of signed in ::\n\n ", "New Value:: ", newVal, "Old Value:: ", oldVal);
+			},
+
+			_observePopupOpen: function (newVal, oldVal) {
+				console.log("value of popup open ::\n\n ", "New Value:: ", newVal, "Old Value:: ", oldVal);
+			},
+
+			_scriptLoaded: function (success) {
+				if (success) {
+					this._script_loaded = true;
+					this._openPopup();
+				}
+
+				console.log(">>>>>>>>> >>>>>> FACEBOOK SDK LOAD SUCCESSFUL? ", success);
+			},
+
+			_loadScript: function (src) {
+				var js = document.createElement("script");
+				js.src =
+					`https://connect.facebook.net/${this.language}/sdk.js#xfbml=1&version=${this.version}&appId=${this.appID}`;
+				js.setAttribute("async", "");
+				js.onload = function () {
+					console.log("Loaded Succesfully!");
+					this._scriptLoaded(true);
+				}.bind(this);
+				js.onerror = function () {
+					console.log("SDK not loaded");
+					this._scriptLoaded(false);
+				}.bind(this);
+				document.head.appendChild(js);
+				console.log(js);
+			},
+		});
+
+	</script>
+</dom-module>
