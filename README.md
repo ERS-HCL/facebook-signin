@@ -5,7 +5,7 @@ Facebook Login component for Angular 5.
 Install via npm
 npm install
 
-
+```
   openPopup() {
       const options = {
         appId: this.appID,
@@ -26,7 +26,7 @@ npm install
         enable_profile_selector: true
       });
   }
-
+  
   statusChangedCallback(response) {
     if (response.status === 'connected') {
       // Logged into app and Facebook.
@@ -46,6 +46,7 @@ npm install
       this.fbsignedIn = false;
       this.fbSigininService.updateFbSigninStatus(response);
     }
+    // this._is_popup_open = false;
   }
 
   fbGraphApi() {
@@ -57,6 +58,7 @@ npm install
       }
     });
   }
+ ```
   
   
 Running the demo app
