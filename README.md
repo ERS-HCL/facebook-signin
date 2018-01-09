@@ -1,7 +1,7 @@
 Angular 5 Facebook Login
 Facebook Login component for Angular 5.
 
-Getting started
+#Getting started
 Install via npm
 npm install
 Import the module
