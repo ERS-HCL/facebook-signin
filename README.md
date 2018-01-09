@@ -7,7 +7,6 @@ npm install
 
 
   openPopup() {
-  
       const options = {
         appId: this.appID,
         cookie: this.cookie,
@@ -27,7 +26,6 @@ npm install
         enable_profile_selector: true
       });
   }
-
 
   statusChangedCallback(response) {
     if (response.status === 'connected') {
