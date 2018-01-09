@@ -19,7 +19,7 @@ npm install
 
       FB.login(function (response) {
         console.log('Get Login Response:: ', response);
-        this._statusChangedCallback(response);
+        this.statusChangedCallback(response);
       }.bind(this), {
         scope: this.scope,
         auth_type: 'reauthenticate',
@@ -29,7 +29,7 @@ npm install
   }
 
 
-  _statusChangedCallback(response) {
+  statusChangedCallback(response) {
     if (response.status === 'connected') {
       // Logged into app and Facebook.
       console.log('connected');
