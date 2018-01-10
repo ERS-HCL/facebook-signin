@@ -9,9 +9,12 @@ Create a developer account in [Facebook Developers](https://developers.facebook.
 
 
 ```typescript
+
+export class FacebookSigninComponent {
+
   openFBLoginPopup() {
       const options = {
-        appId: <Your App ID>,
+        appId: '<Your App ID>',
         cookie: true,
         xfbml: false,
         version: 'v2.10'
@@ -23,7 +26,7 @@ Create a developer account in [Facebook Developers](https://developers.facebook.
         console.log('Get Login Response:: ', response);
         this.statusChangedCallback(response);
       }.bind(this), {
-        scope: this.scope,
+        scope: 'public_profile,email',
         auth_type: 'reauthenticate'
       });
   }
@@ -72,6 +75,8 @@ Create a developer account in [Facebook Developers](https://developers.facebook.
       // console.log('Print FB Logout Response:: ', response);
     });
   }
+  
+}  
  ```
   
 # Installing dependencies and serve project  
