@@ -62,7 +62,7 @@ export class FacebookSigninComponent {
     });
   }
   
-   signOut() {
+  signOut() {
     /* NOTE:
     1. A person logs into Facebook, then logs into your app. Upon logging out from your app,
        the person is still logged into Facebook.
