@@ -4,8 +4,6 @@ Facebook Login component for Angular 5.
 [Click to see the demo](https://angular-facebook.stackblitz.io/signin)
 
 # Getting started
-Install packages via npm
-npm install
 
 ```javascript
   openPopup() {
@@ -60,8 +58,7 @@ npm install
   }
  ```
   
-  
-Running the demo app
-cd demo
+# Installing dependencies and serve project  
+
 npm install
 ng serve
