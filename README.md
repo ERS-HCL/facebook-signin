@@ -1,13 +1,13 @@
 Angular 5 Facebook Login
 Facebook Login component for Angular 5.
 
-[Click to see demo](https://angular-facebook.stackblitz.io/signin)
+[Click to see the demo](https://angular-facebook.stackblitz.io/signin)
 
 # Getting started
-Install via npm
+Install packages via npm
 npm install
 
-```
+```javascript
   openPopup() {
       const options = {
         appId: this.appID,
@@ -23,9 +23,7 @@ npm install
         this.statusChangedCallback(response);
       }.bind(this), {
         scope: this.scope,
-        auth_type: 'reauthenticate',
-        return_scopes: true,
-        enable_profile_selector: true
+        auth_type: 'reauthenticate'
       });
   }
   
@@ -34,8 +32,8 @@ npm install
       // Logged into app and Facebook.
       console.log('connected');
       this.fbsignedIn = true;
-      this.fbGraphApi();
-      this.fbSigininService.updateFbSigninStatus(response);
+      this.fbGraphApi(); // Call Graph API
+      this.fbSigininService.updateFbSigninStatus(response); 
     } else if (response.status === 'not_authorized') {
       // The person is logged into Facebook, but not into the app.
       console.log('Not Authorized');
