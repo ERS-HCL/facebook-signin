@@ -9,8 +9,14 @@ Create a developer account in [Facebook Developers](https://developers.facebook.
 
 
 ```typescript
+import { Component, OnInit, EventEmitter } from '@angular/core';
 
-export class FacebookSigninComponent {
+declare const FB: any;
+
+@Component({
+  ...
+})
+export class FacebookSigninComponent implements OnInit {
 
   openFBLoginPopup() {
       const options = {
@@ -24,14 +30,14 @@ export class FacebookSigninComponent {
 
       FB.login(function (response) {
         console.log('Get Login Response:: ', response);
-        this.statusChangedCallback(response);
+        this._statusChangedCallback(response);
       }.bind(this), {
         scope: 'public_profile,email',
         auth_type: 'reauthenticate'
       });
   }
   
-  statusChangedCallback(response) {
+  _statusChangedCallback(response) {
     if (response.status === 'connected') {
       // Logged into app and Facebook.
       console.log('connected');
@@ -63,19 +69,19 @@ export class FacebookSigninComponent {
   }
   
   signOut() {
-    /* NOTE:
-    1. A person logs into Facebook, then logs into your app. Upon logging out from your app,
-       the person is still logged into Facebook.
-    2. A person logs into your app and into Facebook as part of your app's login flow.
-       Upon logging out from your app, the user is also logged out of Facebook.
-    3. A person logs into another app and into Facebook as part of the other app's login flow,
-       then logs into your app. Upon logging out from either app, the user is logged out of Facebook.
-    */
     FB.logout(function (response) {
       // console.log('Print FB Logout Response:: ', response);
     });
   }
+
+  _loadScript(src) {
+      ...
+  }  
   
+  ngOnInit() {
+    const script = `https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.10&appId=<Your App ID>`;
+    this._loadScript(script);
+  }
 }  
  ```
   
