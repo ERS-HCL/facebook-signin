@@ -5,13 +5,16 @@ Facebook Login component for Angular 5.
 
 # Getting started
 
-```javascript
+Create a developer account in [Facebook Developers](https://developers.facebook.com).
+
+
+```typescript
   openFBLoginPopup() {
       const options = {
-        appId: this.appID,
-        cookie: this.cookie,
+        appId: <Your App ID>,
+        cookie: true,
         xfbml: false,
-        version: this.version
+        version: 'v2.10'
       }
 
       FB.init(options);
@@ -74,5 +77,6 @@ Facebook Login component for Angular 5.
   
 # Installing dependencies and serve project  
 
-npm install
-ng serve
+$ npm install
+
+$ ng serve
