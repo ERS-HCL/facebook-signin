@@ -18,6 +18,8 @@ declare const FB: any;
 })
 export class FacebookSigninComponent implements OnInit {
 
+  @Output() status = new EventEmitter<any>();
+
   openFBLoginPopup() {
       const options = {
         appId: '<Your App ID>',
@@ -40,30 +42,27 @@ export class FacebookSigninComponent implements OnInit {
   _statusChangedCallback(response) {
     if (response.status === 'connected') {
       // Logged into app and Facebook.
-      console.log('connected');
-      this.fbsignedIn = true;
+      // console.log('connected');
       this.fbGraphApi(); // Call Graph API
-      this.fbSigininService.updateFbSigninStatus(response); 
+      this.status.emit({ response: response });
     } else if (response.status === 'not_authorized') {
       // The person is logged into Facebook, but not into the app.
-      console.log('Not Authorized');
-      this.fbsignedIn = false;
-      this.fbSigininService.updateFbSigninStatus(response);
+      // console.log('Not Authorized');
+      this.status.emit({ response: response });
     } else {
       // The person is not logged into Facebook, so we're not sure if
       // they are logged into this app or not.
-      console.log('User not signed in');
-      this.fbsignedIn = false;
-      this.fbSigininService.updateFbSigninStatus(response);
+      // console.log('User not signed in');
+      this.status.emit({ response: response });
     }
   }
 
   fbGraphApi() {
     FB.api('/me', function(response) {
       if (!response || response.error) {
-          console.log('Error occured');
+          // console.log('Error occured');
       } else {
-        console.log('Graph Response', response);
+        // console.log('Graph Response', response);
       }
     });
   }
