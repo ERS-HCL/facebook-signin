@@ -6,7 +6,7 @@ Facebook Login component for Angular 5.
 # Getting started
 
 ```javascript
-  openPopup() {
+  openFBLoginPopup() {
       const options = {
         appId: this.appID,
         cookie: this.cookie,
@@ -54,6 +54,20 @@ Facebook Login component for Angular 5.
       } else {
         console.log('Graph Response', response);
       }
+    });
+  }
+  
+   signOut() {
+    /* NOTE:
+    1. A person logs into Facebook, then logs into your app. Upon logging out from your app,
+       the person is still logged into Facebook.
+    2. A person logs into your app and into Facebook as part of your app's login flow.
+       Upon logging out from your app, the user is also logged out of Facebook.
+    3. A person logs into another app and into Facebook as part of the other app's login flow,
+       then logs into your app. Upon logging out from either app, the user is logged out of Facebook.
+    */
+    FB.logout(function (response) {
+      // console.log('Print FB Logout Response:: ', response);
     });
   }
  ```
