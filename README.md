@@ -47,7 +47,6 @@ Create a developer account in [Facebook Developers](https://developers.facebook.
       this.fbsignedIn = false;
       this.fbSigininService.updateFbSigninStatus(response);
     }
-    // this._is_popup_open = false;
   }
 
   fbGraphApi() {
