@@ -94,9 +94,9 @@ export class FacebookSigninComponent implements OnInit {
 
 ```typescript
 
-  onfbSigninStatus(resp) {
-    // console.log("Getting Response in AppComp:: ", resp.response);
-  }
+ onfbSigninStatus(resp) {
+   // console.log("Getting Response in AppComp:: ", resp.response);
+ }
   
 ```
 
