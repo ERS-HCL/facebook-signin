@@ -1,6 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs/Subject';
-
 
 declare const FB: any;
 
@@ -29,24 +27,9 @@ export class FacebookSigninService {
    * @event signin-not-logged-in
    */
 
-  fbSigninStatus = new Subject<any>();
-
   _script_loaded: Boolean = false;
 
-  // _is_popup_open: Boolean = false; // observer: '_observePopupOpen'
-
-  /**
-   * Is user signed in?
-   */
-  fbsignedIn: Boolean = false; // notify: true, observer: '_observeSignedIn'
-
-  fbLoginToken: String = '';
-
   constructor() {}
-
-  updateFbSigninStatus(response: Object) {
-    this.fbSigninStatus.next(response);
-  }
 
   signOut() {
     /* NOTE:
@@ -58,9 +41,8 @@ export class FacebookSigninService {
        then logs into your app. Upon logging out from either app, the user is logged out of Facebook.
     */
     FB.logout(function (response) {
-      this.fbsignedIn = false;
       console.log('Print Logout Response:: ', response);
-    });
+    }.bind(this));
   }
 
   _scriptLoaded(success) {

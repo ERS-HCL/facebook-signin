@@ -1,9 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FacebookSigninService } from './facebook-signin.service';
-import { Router, ActivatedRoute } from '@angular/router';
 
 declare const FB: any;
-// declare const window: any;
 
 @Component({
   selector: 'facebook-signin',
@@ -17,7 +15,7 @@ export class FacebookSigninComponent implements OnInit {
   /**
    * The app ID of your Facebook app. Create one at https://developers.facebook.com/apps/
    */
-  appID: String = '1019107491567128'; // '319362775194032'
+  appID: String = '<your_app_id>';
 
   /**
    * Whether you want to set a cookie in order to allow the server to access the session.
@@ -40,63 +38,47 @@ export class FacebookSigninComponent implements OnInit {
    */
   scope: String = 'public_profile,email';
 
-  fbsignedIn: Boolean = false; // notify: true, observer: '_observeSignedIn'
+  @Output() status = new EventEmitter<any>();
 
-  _is_popup_open: Boolean = false; // observer: '_observePopupOpen'
-
-  constructor(private fbSigininService: FacebookSigninService,
-              private router: Router,
-              private route: ActivatedRoute) {}
+  constructor(private fbSigininService: FacebookSigninService) {}
 
   openPopup() {
-    // if (!this._is_popup_open) {
-      console.log('Facebook Object', FB);
 
       const options = {
         appId: this.appID,
         cookie: this.cookie,
         xfbml: false,
         version: this.version
-        // status: true
       }
 
       FB.init(options);
 
       FB.login(function (response) {
-        console.log('Get Login Response:: ', response);
+        // console.log('Get Login Response:: ', response);
         this._statusChangedCallback(response);
       }.bind(this), {
         scope: this.scope,
-        auth_type: 'reauthenticate',
-        return_scopes: true,
-        enable_profile_selector: true
+        auth_type: 'reauthenticate'
       });
-
-      // this._is_popup_open = true;
-    // }
   }
 
 
   _statusChangedCallback(response) {
     if (response.status === 'connected') {
       // Logged into app and Facebook.
-      console.log('connected');
-      this.fbsignedIn = true;
+      // console.log('connected');
       this.fbGraphApi();
-      this.fbSigininService.updateFbSigninStatus(response);
+      this.status.emit({ response: response });
     } else if (response.status === 'not_authorized') {
       // The person is logged into Facebook, but not into the app.
-      console.log('Not Authorized');
-      this.fbsignedIn = false;
-      this.fbSigininService.updateFbSigninStatus(response);
+      // console.log('Not Authorized');
+      this.status.emit({ response: response });
     } else {
       // The person is not logged into Facebook, so we're not sure if
       // they are logged into this app or not.
-      console.log('User not signed in');
-      this.fbsignedIn = false;
-      this.fbSigininService.updateFbSigninStatus(response);
+      // console.log('User not signed in');
+      this.status.emit({ response: response });
     }
-    // this._is_popup_open = false;
   }
 
   fbGraphApi() {
@@ -105,6 +87,7 @@ export class FacebookSigninComponent implements OnInit {
           console.log('Error occured');
       } else {
         console.log('Graph Response', response);
+        this.status.emit({ response: response });      
       }
     });
   }
