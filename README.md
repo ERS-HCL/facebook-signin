@@ -1,4 +1,3 @@
-Angular 5 Facebook Login
 Facebook Login component for Angular 5.
 
 [Click to see the demo](https://angular-facebook.stackblitz.io/signin)
