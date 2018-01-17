@@ -83,8 +83,20 @@ export class FacebookSigninComponent implements OnInit {
 }  
  ```
   
-# Installing dependencies and serve project  
+# Listening to Facebook Signin Events
 
-$ npm install
+```html
 
-$ ng serve
+<facebook-signin (status)="onfbSigninStatus($event)"></facebook-signin>
+
+
+```
+
+```typescript
+
+  onfbSigninStatus(resp) {
+    // console.log("Getting Response in AppComp:: ", resp.response);
+  }
+  
+```
+
