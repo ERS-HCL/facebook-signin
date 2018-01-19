@@ -81,14 +81,14 @@ FB Signout
 ```
 
   
-# Listening to Facebook Signin Events
+# Adding Facebook Signin to your project
 
 ```html
 
 <facebook-signin (status)="onfbSigninStatus($event)"></facebook-signin>
 
-
 ```
+Handle events
 
 ```typescript
 
