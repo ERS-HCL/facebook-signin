@@ -6,55 +6,57 @@ Facebook Login component for Angular 5.
 
 Create a developer account in [Facebook Developers](https://developers.facebook.com).
 
+Initialize FB SDK
 
 ```typescript
-import { Component, OnInit, EventEmitter } from '@angular/core';
 
-declare const FB: any;
-
-@Component({
-  ...
-})
-export class FacebookSigninComponent implements OnInit {
-
-  @Output() status = new EventEmitter<any>();
-
-  openFBLoginPopup() {
-      const options = {
-        appId: '<Your App ID>',
-        cookie: true,
-        xfbml: false,
-        version: 'v2.10'
-      }
-
-      FB.init(options);
-
-      FB.login(function (response) {
-        console.log('Get Login Response:: ', response);
-        this._statusChangedCallback(response);
-      }.bind(this), {
-        scope: 'public_profile,email',
-        auth_type: 'reauthenticate'
-      });
+  const options = {
+    appId: '<Your App ID>',
+    cookie: true,
+    xfbml: false,
+    version: 'v2.10'
   }
-  
-  _statusChangedCallback(response) {
+
+  FB.init(options);
+      
+```
+Call login api
+
+```typescript
+
+    FB.login(function (response) {
+       console.log('Get Login Response:: ', response);
+       this.statusChangedCallback(response);
+    }.bind(this), {
+       scope: 'public_profile,email'
+    });
+      
+```
+
+Handle status change callback
+
+```typescript
+
+  statusChangedCallback(response) {
     if (response.status === 'connected') {
       // Logged into app and Facebook.
-      // console.log('connected');
       this.fbGraphApi(); // Call Graph API
       this.status.emit({ response: response });
     } else if (response.status === 'not_authorized') {
       // The person is logged into Facebook, but not into the app.
-      // console.log('Not Authorized');
       this.status.emit({ response: response });
     } else {
       // The person is not logged into Facebook, so we're not sure if
       // they are logged into this app or not.
-      // console.log('User not signed in');
       this.status.emit({ response: response });
     }
   }
+  
+```
+
+Call FB Graph API
+
+```typescript
 
   fbGraphApi() {
     FB.api('/me', function(response) {
@@ -64,24 +66,20 @@ export class FacebookSigninComponent implements OnInit {
         // console.log('Graph Response', response);
       }
     });
-  }
-  
+  }  
+```
+FB Signout
+
+```typescript
+
   signOut() {
     FB.logout(function (response) {
       // console.log('Print FB Logout Response:: ', response);
     });
   }
-
-  _loadScript(src) {
-      ...
-  }  
   
-  ngOnInit() {
-    const script = `https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.10&appId=<Your App ID>`;
-    this._loadScript(script);
-  }
-}  
- ```
+```
+
   
 # Listening to Facebook Signin Events
 
