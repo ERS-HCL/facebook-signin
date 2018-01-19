@@ -20,7 +20,7 @@ Initialize FB SDK
   FB.init(options);
       
 ```
-Call login api
+FB Login api
 
 ```typescript
 
@@ -54,7 +54,7 @@ Handle status change callback
   
 ```
 
-Call FB Graph API
+FB Graph API
 
 ```typescript
 
@@ -81,14 +81,14 @@ FB Signout
 ```
 
   
-# Adding Facebook Signin to your project
+# Adding Facebook Signin component in your project
 
 ```html
 
 <facebook-signin (status)="onfbSigninStatus($event)"></facebook-signin>
 
 ```
-Handle events
+Listening to events
 
 ```typescript
 
