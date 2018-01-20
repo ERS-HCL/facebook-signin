@@ -6,7 +6,8 @@ Facebook Login component for Angular 5.
 
 Create a developer account in [Facebook Developers](https://developers.facebook.com).
 
-STEPS - 
+Steps -
+
 1. Log into your developer account
 2. Create new Facebook app
 3. Choose platform
@@ -30,7 +31,7 @@ Initialize FB SDK with options. You must replace the value in your-app-id with t
       
 ```
 
-# Log People in with the Login Dialog from the JavaScript SDK
+## Log People in with the Login Dialog from the JavaScript SDK
 
 Calling FB.login() prompts the user to authenticate your app using the Login Dialog. By default, calling FB.login() will attempt to authenticate the user with only the basic permissions. If you want one or more additional permissions, call FB.login() with an option object, and set the scope parameter with a comma-separated list of the permissions you wish to request from the user.
 
@@ -44,7 +45,7 @@ Calling FB.login() prompts the user to authenticate your app using the Login Dia
     });
       
 ```
-# Handle Login Dialog Response
+## Handle Login Dialog Response
 
 At this point in the login flow, your app displays the login dialog, which gives people the choice of whether to cancel or to enable the app to access their data. Status specifies the login status of the person using the app.
 
@@ -67,7 +68,7 @@ At this point in the login flow, your app displays the login dialog, which gives
   
 ```
 
-# Call the Graph API
+## Call the Graph API
 
 To read or write data to the Graph API use method FB.api(). The version parameter in the FB.init call is used to determine which Graph API version is used.
 
@@ -84,7 +85,7 @@ To read or write data to the Graph API use method FB.api(). The version paramete
   }  
 ```
 
-# Log People Out
+## Log People Out
 
 You can log people out of your app by attaching the JavaScript SDK function FB.logout to a button or a link, as follows:
 Consider the 3 scenarios below:
@@ -104,7 +105,7 @@ Consider the 3 scenarios below:
 ```
 Note: This function call may also log the person out of Facebook.
 
-# Adding Facebook Signin component in your project
+## Adding Facebook Signin component in your project
 
 ```html
 
