@@ -54,15 +54,19 @@ At this point in the login flow, your app displays the login dialog, which gives
   statusChangedCallback(response) {
     if (response.status === 'connected') {
       // Logged into app and Facebook.
-      this.fbGraphApi(); // Call Graph API
-      this.status.emit({ response: response });
+      // Call Graph API
+      FB.api('/me', function(response) {
+        if (!response || response.error) {
+            // console.log('Error occured');
+        } else {
+          // console.log('Graph Response', response);
+        }
+      });
     } else if (response.status === 'not_authorized') {
       // The person is logged into Facebook, but not into the app.
-      this.status.emit({ response: response });
     } else {
       // The person is not logged into Facebook, so we're not sure if
       // they are logged into this app or not.
-      this.status.emit({ response: response });
     }
   }
   
