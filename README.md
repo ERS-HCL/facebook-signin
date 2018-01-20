@@ -6,21 +6,33 @@ Facebook Login component for Angular 5.
 
 Create a developer account in [Facebook Developers](https://developers.facebook.com).
 
-Initialize FB SDK
+STEPS - 
+1. Log into your developer account
+2. Create new Facebook app
+3. Choose platform
+4. Choose a name
+5. Follow Quick Start steps
+6. Get App ID
+
+Initialize FB SDK with options. You must replace the value in your-app-id with the ID of your own Facebook App. You can find this ID using the [App Dashboard](https://developers.facebook.com/apps)
 
 ```typescript
 
   const options = {
-    appId: '<Your App ID>',
+    appId: '<your-app-id>',
     cookie: true,
     xfbml: false,
-    version: 'v2.10'
+    version: 'v2.10',
+    status: true
   }
 
   FB.init(options);
       
 ```
-FB Login api
+
+# Log People in with the Login Dialog from the JavaScript SDK
+
+Calling FB.login() prompts the user to authenticate your app using the Login Dialog. By default, calling FB.login() will attempt to authenticate the user with only the basic permissions. If you want one or more additional permissions, call FB.login() with an option object, and set the scope parameter with a comma-separated list of the permissions you wish to request from the user.
 
 ```typescript
 
@@ -32,8 +44,9 @@ FB Login api
     });
       
 ```
+# Handle Login Dialog Response
 
-Handle status change callback
+At this point in the login flow, your app displays the login dialog, which gives people the choice of whether to cancel or to enable the app to access their data. Status specifies the login status of the person using the app.
 
 ```typescript
 
@@ -54,7 +67,9 @@ Handle status change callback
   
 ```
 
-FB Graph API
+# Call the Graph API
+
+To read or write data to the Graph API use method FB.api(). The version parameter in the FB.init call is used to determine which Graph API version is used.
 
 ```typescript
 
@@ -68,7 +83,15 @@ FB Graph API
     });
   }  
 ```
-FB Signout
+
+# Log People Out
+
+You can log people out of your app by attaching the JavaScript SDK function FB.logout to a button or a link, as follows:
+Consider the 3 scenarios below:
+
+1. A person logs into Facebook, then logs into your app. Upon logging out from your app, the person is still logged into Facebook.
+2. A person logs into your app and into Facebook as part of your app's login flow. Upon logging out from your app, the user is also logged out of Facebook.
+3. A person logs into another app and into Facebook as part of the other app's login flow, then logs into your app. Upon logging out from either app, the user is logged out of Facebook.
 
 ```typescript
 
@@ -79,8 +102,8 @@ FB Signout
   }
   
 ```
+Note: This function call may also log the person out of Facebook.
 
-  
 # Adding Facebook Signin component in your project
 
 ```html
